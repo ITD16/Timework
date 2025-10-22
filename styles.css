@@ -1,5 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Roboto+Mono:wght@700&display=swap');
+
 
 body {
 display: flex;
@@ -23,6 +25,7 @@ font-weight: 800;
 color: #111;
 text-align: center;
 letter-spacing: 2px;user-select: none;
+font-family: 'Roboto Mono', monospace;
 }
 #info {
 font-size: 1.2rem;
