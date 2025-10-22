@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Đồng hồ realtime GMT+7 (sync Internet)</title>
-  <style>
-    body { font-family: system-ui, sans-serif; background: #0b1020; color: #e7ecff; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-    h1 { margin-top: 30px; color: #cfe0ff; }
-    .clock { background: #121a33; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 20px 40px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,.4); margin-top: 30px; }
-    .zone { font-size: 18px; color: #9fb0ff; margin-bottom: 10px; }
-    .time { font-size: 48px; font-weight: bold; }
-    .date { font-size: 16px; color: #aab8ff; margin-top: 6px; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Realtime Clock</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>🕒 Đồng hồ realtime GMT+7 (Asia/Ho_Chi_Minh)</h1>
-  <div id="clock" class="clock">
-    <div class="zone">Asia/Ho_Chi_Minh (GMT+7)</div>
-    <div class="time">--:--:--</div>
-    <div class
+  <div id="clock">00:00:00</div>
+  <div id="info">Difference: calculating...</div>
+  <select id="timezone">
+    <option value="Asia/Bangkok" selected>GMT+7 (Bangkok)</option>
+    <option value="UTC">UTC (GMT+0)</option>
+    <option value="America/New_York">GMT-4 (New York)</option>
+    <option value="Europe/London">GMT+1 (London)</option>
+    <option value="Asia/Tokyo">GMT+9 (Tokyo)</option>
+    <option value="Australia/Sydney">GMT+11 (Sydney)</option>
+  </select>
+
+  <script src="script.js"></script>
+</body>
+</html>
