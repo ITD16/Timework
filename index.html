@@ -3,93 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Đồng hồ đa múi giờ realtime</title>
+  <title>Đồng hồ realtime GMT+7 (sync Internet)</title>
   <style>
     body { font-family: system-ui, sans-serif; background: #0b1020; color: #e7ecff; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
     h1 { margin-top: 30px; color: #cfe0ff; }
-    .controls { margin: 20px; }
-    select { background: #121a33; color: #e7ecff; padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.2); }
-    .clock-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; width: 90%; max-width: 1000px; }
-    .clock { background: #121a33; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,.4); }
+    .clock { background: #121a33; border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 20px 40px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,.4); margin-top: 30px; }
     .zone { font-size: 18px; color: #9fb0ff; margin-bottom: 10px; }
-    .time { font-size: 36px; font-weight: bold; }
-    .date { font-size: 14px; color: #aab8ff; }
+    .time { font-size: 48px; font-weight: bold; }
+    .date { font-size: 16px; color: #aab8ff; margin-top: 6px; }
   </style>
 </head>
 <body>
-  <h1>🕒 Đồng hồ realtime đa múi giờ (sync Internet)</h1>
-  <div class="controls">
-    <label for="addZone">Chọn múi giờ:</label>
-    <select id="addZone"></select>
-    <button id="addBtn">Thêm đồng hồ</button>
-  </div>
-  <div id="clockContainer" class="clock-container"></div>
-
-  <script>
-    const clockContainer = document.getElementById('clockContainer');
-    const select = document.getElementById('addZone');
-
-    // Lấy danh sách timezones từ API quốc tế (IANA)
-    async function loadTimezones() {
-      try {
-        const res = await fetch('https://worldtimeapi.org/api/timezone');
-        const zones = await res.json();
-        zones.forEach(z => {
-          const opt = document.createElement('option');
-          opt.value = z;
-          opt.textContent = z;
-          select.appendChild(opt);
-        });
-      } catch (e) {
-        console.error('Không thể tải danh sách timezone:', e);
-      }
-    }
-
-    // Lấy thời gian hiện tại từ Internet theo timezone
-    async function fetchTime(tz) {
-      try {
-        const res = await fetch(`https://worldtimeapi.org/api/timezone/${tz}`);
-        if (!res.ok) throw new Error('Fetch failed');
-        return await res.json();
-      } catch (e) {
-        console.error('Lỗi fetch thời gian', e);
-        return null;
-      }
-    }
-
-    function createClockElement(tz) {
-      const div = document.createElement('div');
-      div.className = 'clock';
-      div.innerHTML = `<div class='zone'>${tz}</div><div class='time'>...</div><div class='date'>...</div>`;
-      clockContainer.appendChild(div);
-      return div;
-    }
-
-    async function updateClock(clockEl, tz) {
-      const data = await fetchTime(tz);
-      if (!data) return;
-      const offsetMs = data.raw_offset * 1000 + (data.dst ? data.dst_offset * 1000 : 0);
-      let baseTime = new Date(data.utc_datetime);
-      function tick() {
-        baseTime = new Date(baseTime.getTime() + 1000);
-        const local = new Date(baseTime.getTime() + offsetMs);
-        const h = String(local.getUTCHours()).padStart(2,'0');
-        const m = String(local.getUTCMinutes()).padStart(2,'0');
-        const s = String(local.getUTCSeconds()).padStart(2,'0');
-        clockEl.querySelector('.time').textContent = `${h}:${m}:${s}`;
-        clockEl.querySelector('.date').textContent = local.toISOString().substring(0,10);
-      }
-      tick();
-      setInterval(tick, 1000);
-    }
-
-    document.getElementById('addBtn').addEventListener('click', async () => {
-      const tz = select.value;
-      const clockEl = createClockElement(tz);
-      updateClock(clockEl, tz);
-    });
-
-    loadTimezones();
-  </script>
-</body>
-</html>
+  <h1>🕒 Đồng hồ realtime GMT+7 (Asia/Ho_Chi_Minh)</h1>
+  <div id="clock" class="clock">
+    <div class="zone">Asia/Ho_Chi_Minh (GMT+7)</div>
+    <div class="time">--:--:--</div>
+    <div class
