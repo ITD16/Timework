@@ -95,61 +95,37 @@
 
   <script>
   const clock = document.getElementById('clock');
-  const info = document.getElementById('info');
   const timezoneSelect = document.getElementById('timezone');
 
-  let serverEpoch = 0;      // thời gian server (ms)
-  let serverFetchedAt = 0; // thời điểm fetch (ms)
+  function updateClock() {
+    const now = new Date();
 
-  async function getServerTime() {
-    try {
-      const t0 = performance.now();
-      const res = await fetch(
-        'https://worldtimeapi.org/api/timezone/' + timezoneSelect.value
-      );
-      const t1 = performance.now();
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: timezoneSelect.value,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).formatToParts(now);
 
-      const data = await res.json();
+    const get = t => parts.find(p => p.type === t).value;
 
-      serverEpoch = new Date(data.datetime).getTime();
-      serverFetchedAt = Date.now();
+    const timeStr = `${get('hour')}:${get('minute')}:${get('second')}`;
 
-      const latency = (t1 - t0) / 2;
-      info.textContent = `Latency ~ ${(latency).toFixed(0)} ms`;
-    } catch (e) {
-      info.textContent = 'Error fetching world time';
-    }
+    clock.innerHTML = timeStr
+      .split('')
+      .map((ch, i) =>
+        (i === 2 || i === 5)
+          ? `<span style="font-size:12rem">${ch}</span>`
+          : `<span>${ch}</span>`
+      )
+      .join('');
   }
 
-  function updateClock() {
-  if (!serverEpoch) return;
-
-  const now = serverEpoch + (Date.now() - serverFetchedAt);
-  const d = new Date(now);
-
-  const hh = String(d.getHours()).padStart(2, '0');
-  const mm = String(d.getMinutes()).padStart(2, '0');
-  const ss = String(d.getSeconds()).padStart(2, '0');
-
-  const timeStr = `${hh}:${mm}:${ss}`;
-
-  clock.innerHTML = timeStr
-    .split('')
-    .map((ch, i) =>
-      (i === 2 || i === 5)
-        ? `<span style="font-size:12rem">${ch}</span>`
-        : `<span>${ch}</span>`
-    )
-    .join('');
-}
-
-
-  timezoneSelect.addEventListener('change', getServerTime);
-
-  getServerTime();
   setInterval(updateClock, 1000);
-  setInterval(getServerTime, 60000);
+  updateClock();
 </script>
+
 
 </body>
 </html>
