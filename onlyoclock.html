@@ -88,19 +88,20 @@
  <script>
   const clock = document.getElementById('clock');
   const TZ = 'Asia/Bangkok';
+  const TIME_API = 'https://script.google.com/macros/s/AKfycbzM1cMnmc4e8_xJgxZCjrnvp42mn-TtsR1HtHMt3nxstzHvlNp6OXLOLnQPfwhdyQostQ/exec';
 
   let baseTime = 0;
   let baseAt = 0;
 
   async function syncTime() {
     try {
-      const res = await fetch('/.netlify/functions/time');
+      const res = await fetch(TIME_API);
       const data = await res.json();
 
       baseTime = new Date(data.now).getTime();
       baseAt = Date.now();
     } catch (e) {
-      console.warn('Time sync failed');
+      console.error('Time sync failed', e);
     }
   }
 
@@ -134,9 +135,6 @@
   setInterval(updateClock, 1000);
   setInterval(syncTime, 5 * 60 * 1000);
 </script>
-
-
-
 
 </body>
 </html>
