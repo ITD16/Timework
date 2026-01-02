@@ -94,54 +94,54 @@
   </select>
 
   <script>
-    const clock = document.getElementById('clock');
-    const info = document.getElementById('info');
-    const timezoneSelect = document.getElementById('timezone');
-    let offset = 0;
+  const clock = document.getElementById('clock');
+  const TZ = 'Asia/Bangkok';
 
-    async function getServerTime() {
-      try {
-        const start = performance.now();
-        const res = await fetch('https://worldtimeapi.org/api/timezone/' + timezoneSelect.value);
-        const end = performance.now();
-        const latency = (end - start) / 1000;
-        const data = await res.json();
-        const serverTime = new Date(data.datetime);
-        const localTime = new Date();
-        offset = serverTime - localTime;
-        info.textContent = `Độ trễ: ${(offset / 1000).toFixed(3)}s `;
-      } catch {
-        info.textContent = 'Error fetching time. Retrying...';
-      }
+  let baseTime = 0;
+  let baseAt = 0;
+
+  async function syncTime() {
+    try {
+      const res = await fetch('/.netlify/functions/time');
+      const data = await res.json();
+
+      baseTime = new Date(data.now).getTime();
+      baseAt = Date.now();
+    } catch (e) {
+      console.error('Time sync failed', e);
     }
+  }
 
-    function updateClock() {
-      const now = new Date(Date.now() + offset);
-      const timeStr = now.toLocaleTimeString('en-GB', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: timezoneSelect.value
-      });
-      clock.innerHTML = timeStr
-            .split('')
-            .map((ch, index) => {
+  function updateClock() {
+    if (!baseTime) return;
 
-                if(index==2||index==5){
-                    return `<span style="font-size: 12rem;">${ch}</span>`;
-                }else{
+    const now = baseTime + (Date.now() - baseAt);
 
-                    return `<span>${ch}</span>`;
-                }
-            })
-            .join('');
-    }
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: TZ,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).formatToParts(new Date(now));
 
-    timezoneSelect.addEventListener('change', getServerTime);
-    getServerTime();
-    setInterval(updateClock, 1000);
-    setInterval(getServerTime, 60000);
-  </script>
+    const get = t => parts.find(p => p.type === t).value;
+    const timeStr = `${get('hour')}:${get('minute')}:${get('second')}`;
+
+    clock.innerHTML = timeStr
+      .split('')
+      .map((ch, i) =>
+        (i === 2 || i === 5)
+          ? `<span style="font-size:12rem">${ch}</span>`
+          : `<span>${ch}</span>`
+      )
+      .join('');
+  }
+
+  syncTime();
+  setInterval(updateClock, 1000);
+  setInterval(syncTime, 5 * 60 * 1000);
+</script>
+
 </body>
 </html>
