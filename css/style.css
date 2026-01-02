@@ -1,6 +1,6 @@
 @font-face {
       font-family: 'TimeTraveler';
-      src: url('./fontchu.ttf') format('truetype');
+      src: url('/font/fontchu.ttf') format('truetype');
       font-weight: 700;
       font-style: normal;
     }
