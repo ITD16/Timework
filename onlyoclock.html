@@ -83,32 +83,24 @@
 <body>
     <h1>D16 Time Working</h1>
   <div id="clock">00:00:00</div>
-  <div id="info">Difference: calculating...</div>
-  <select id="timezone">
-    <option value="Asia/Bangkok" selected>GMT+7 (Bangkok)</option>
-    <option value="UTC">UTC (GMT+0)</option>
-    <option value="America/New_York">GMT-4 (New York)</option>
-    <option value="Europe/London">GMT+1 (London)</option>
-    <option value="Asia/Tokyo">GMT+9 (Tokyo)</option>
-    <option value="Australia/Sydney">GMT+11 (Sydney)</option>
-  </select>
+  
 
-  <script>
+ <script>
   const clock = document.getElementById('clock');
-  const timezoneSelect = document.getElementById('timezone');
+  const FIXED_TIMEZONE = 'Asia/Bangkok'; // GMT+7 cố định
 
   function updateClock() {
     const now = new Date();
 
     const parts = new Intl.DateTimeFormat('en-GB', {
-      timeZone: timezoneSelect.value,
+      timeZone: FIXED_TIMEZONE,
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
       hour12: false
     }).formatToParts(now);
 
-    const get = t => parts.find(p => p.type === t).value;
+    const get = type => parts.find(p => p.type === type).value;
 
     const timeStr = `${get('hour')}:${get('minute')}:${get('second')}`;
 
@@ -122,9 +114,10 @@
       .join('');
   }
 
-  setInterval(updateClock, 1000);
   updateClock();
+  setInterval(updateClock, 1000);
 </script>
+
 
 
 </body>
