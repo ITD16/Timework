@@ -94,7 +94,7 @@
 
   async function syncTime() {
     try {
-      const res = await fetch('/js/time');
+      const res = await fetch('/js/time.js');
       const data = await res.json();
 
       baseTime = new Date(data.now).getTime();
