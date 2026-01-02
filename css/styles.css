@@ -1,0 +1,70 @@
+@font-face {
+      font-family: 'TimeTraveler';
+      src: url('./fontchu.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #f9f9f9;
+      font-family: sans-serif, monospace;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 0;
+      color: #222;
+      text-align: center;
+    }
+
+    #clock {
+      font-family: 'TimeTraveler', monospace;
+      font-size: 16rem;
+      font-weight: 700;
+      color: #111;
+      text-align: center;
+      letter-spacing: 0.1em;
+      width: 100%;
+      max-width: 1000px;
+      height: 16rem;
+      line-height: 16rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      white-space: pre;
+      position: relative;
+    }
+
+    /* Giữ vị trí cố định và ngăn rung */
+    #clock span {
+      display: inline-block;
+      width: 1ch; /* chiều rộng ký tự cố định */
+      text-align: center;
+    }
+
+    #info {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #555;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    select {
+      margin-top: 15px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      outline: none;
+      font-family: sans-serif, monospace;
+      background: #fff;
+    }
