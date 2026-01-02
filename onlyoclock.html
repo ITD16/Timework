@@ -87,21 +87,37 @@
 
  <script>
   const clock = document.getElementById('clock');
-  const FIXED_TIMEZONE = 'Asia/Bangkok'; // GMT+7 cố định
+  const TZ = 'Asia/Bangkok';
+
+  let baseTime = 0;
+  let baseAt = 0;
+
+  async function syncTime() {
+    try {
+      const res = await fetch('https://cloudflare.com', { method: 'HEAD' });
+      const serverDate = new Date(res.headers.get('date'));
+
+      baseTime = serverDate.getTime();
+      baseAt = Date.now();
+    } catch (e) {
+      console.warn('Time sync failed');
+    }
+  }
 
   function updateClock() {
-    const now = new Date();
+    if (!baseTime) return;
+
+    const now = baseTime + (Date.now() - baseAt);
 
     const parts = new Intl.DateTimeFormat('en-GB', {
-      timeZone: FIXED_TIMEZONE,
+      timeZone: TZ,
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
       hour12: false
-    }).formatToParts(now);
+    }).formatToParts(new Date(now));
 
-    const get = type => parts.find(p => p.type === type).value;
-
+    const get = t => parts.find(p => p.type === t).value;
     const timeStr = `${get('hour')}:${get('minute')}:${get('second')}`;
 
     clock.innerHTML = timeStr
@@ -114,8 +130,9 @@
       .join('');
   }
 
-  updateClock();
+  syncTime();
   setInterval(updateClock, 1000);
+  setInterval(syncTime, 5 * 60 * 1000); // sync lại mỗi 5 phút
 </script>
 
 
