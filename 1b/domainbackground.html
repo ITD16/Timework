@@ -153,7 +153,7 @@ async function applyConfig() {
     if (!res.ok) throw new Error("Không load được config.json");
 
     const cfg = await res.json();
-    const domains = Array.isArray(cfg.domains) ? cfg.domains : [];
+    const domains = Array.isArray(cfg.domains1b) ? cfg.domains1b : [];
     const d0 = domains[0] || "";
     const d1 = domains[1] || "";
 
