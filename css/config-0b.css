@@ -37,7 +37,7 @@ body {
 /* H1: font Impact, màu cam, responsive size */
 
  h1.old {
-  font-family: 'ImpactLocal', sans-serif;
+  font-family: sans-serif;
   color: #f5d622;
   font-weight: 900;
   text-align: center;
@@ -52,7 +52,7 @@ body {
 } 
 
 .autofit {
-  font-family: 'ImpactLocal', Impact, sans-serif;
+  font-family:  sans-serif;
   color: #f5d622;
   font-weight: 900;
   text-align: center;
