@@ -25,6 +25,8 @@
     <script>
 const CONFIG_URL = "../config.json";
 
+let lastDomainsKey = null;
+
 async function applyConfig() {
   try {
     const res = await fetch(CONFIG_URL + "?t=" + Date.now(), { cache: "no-cache" });
@@ -32,15 +34,18 @@ async function applyConfig() {
 
     const cfg = await res.json();
 
-    // Set title
-    if (cfg.title) {
-      document.title = cfg.title;
-    }
+    const domains = Array.isArray(cfg.domains1b) ? cfg.domains1b : [];
+    const d0 = domains[0] || "";
+    const d1 = domains[1] || "";
 
-    // Set domain
-    const domains = cfg.domains1b || [];
-    document.getElementById("domain1").textContent = domains[0] || "";
-    document.getElementById("domain2").textContent = domains[1] || "";
+    // Tạo key để so sánh
+    const key = d0 + "|" + d1;
+    if (key === lastDomainsKey) return; // không đổi => không update DOM
+
+    lastDomainsKey = key;
+
+    document.getElementById("domain1").textContent = d0;
+    document.getElementById("domain2").textContent = d1;
 
     // Bật pháo hoa
     if (cfg.enableFirework === true && !window._fireworkStarted) {
