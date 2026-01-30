@@ -48,6 +48,8 @@ async function applyConfig() {
 
     document.getElementById("domain1").textContent = d0;
     document.getElementById("domain2").textContent = d1;
+    console.log("Đổi thành công!");
+    autoFitText();
 
     // Bật pháo hoa
     if (cfg.enableFirework === true && !window._fireworkStarted) {
